@@ -22,6 +22,8 @@ private:
 
     void clean_frame(int x, int y);
 
+    void from_next_to_now();
+
 };
 
 #endif

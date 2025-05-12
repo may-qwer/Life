@@ -13,7 +13,10 @@ Game::Game() {
             mtx_now[i][j] = '.';
         }
     }
-    mtx_next = mtx_now;
+    mtx_next = new char*[HEIGHT];
+    for (int i = 0; i < HEIGHT; i++) {
+        mtx_next[i] = new char[WIDTH];
+    }
 }
 
 Game::~Game() {
@@ -34,7 +37,7 @@ void Game::show() {
             }
             cout << endl;
         }
-        mtx_now = mtx_next;
+    from_next_to_now();
     }
 }
 
@@ -52,12 +55,10 @@ void Game::clean_frame(int x, int y) {
 
 void Game::set_next_gen(int x, int y) {
     int k = 0;
-    // cout <<"Y, X: " << y << " "<< x << ": ";
-    for (int i = -1; i < 2; i ++ ) {
-        for (int j = -1; j < 2; j++) {
-            if (i != 0 || j != 0) {
-                // cout << y+i << " " << x+j << "; ";
-                if (mtx_now[y+i][x+j] == '#') {
+    for (int i = -1; i <= 1; i ++ ) {
+        for (int j = -1; j <= 1; j++) {
+            if (!(i == 0 && j == 0)) {
+                if (mtx_now[y+j][x+i] == '#') {
                     k++;
                 }
             }
@@ -69,5 +70,15 @@ void Game::set_next_gen(int x, int y) {
         mtx_next[y][x] = '#';
     } else if ((k < 2 || k > 3) && mtx_now[y][x] == '#') {
         mtx_next[y][x] = '.';
+    } else {
+        mtx_next[y][x] = '.';
+    }
+}
+
+void Game::from_next_to_now() {
+    for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < WIDTH; x++) {
+            mtx_now[y][x] = mtx_next[y][x];
+        }
     }
 }
